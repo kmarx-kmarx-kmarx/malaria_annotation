@@ -1,6 +1,6 @@
 # tool for quickly annotating an image as positive/negative
 # appends _p at end of filename for positive, _n for negative
-# press 'q' to quit and save, a' to go back, 's' for negative, 'd' for positive, 'f' for unsure, and 'g' to skip to the next image
+# press 'q' to quit and save, a' to go back, 's' for negative, 'd' for positive, 'f' for unsure
 
 
 import os
@@ -92,10 +92,10 @@ while i < n_imgs:
             i += 1
             pass
         i = max(0, i)
-    if key_pressed == 'g':
-        # case g - go to next image
-        i += 1
-        i = min(n_imgs, i)
+    # if key_pressed == 'g':
+    #     # case g - go to next image
+    #     i += 1
+    #     i = min(n_imgs, i)
     if key_pressed == 's':
         # case s: mark as negative and go to next
         status = 2
