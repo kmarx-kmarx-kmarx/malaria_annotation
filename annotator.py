@@ -8,8 +8,9 @@ import pygame
 import glob
 import pandas as pd
 import random
+import os
 
-path_to_images = "./output/"
+path_to_images = "./output"
 image_type = "png"
 path_to_spot_list_csv = "./spot_list_ilastik_U3D.csv"
 path_to_out_csv = "./annotated_spot_list_ilastik_U3D.csv"
@@ -50,7 +51,7 @@ while i < n_imgs:
     else:
         img_name = str(spotlist["FOV_row"][index])  + "_" + str(spotlist["FOV_col"][index]) + "_" + str(spotlist["x"][index]) + "_" + str(spotlist["y"][index])
 
-    target_path = path_to_images + img_name + "." + image_type
+    target_path = os.path.join(path_to_images, img_name + "." + image_type)
     print(target_path)
     # set window name
     pygame.display.set_caption(img_name)
@@ -62,7 +63,7 @@ while i < n_imgs:
     pygame.display.flip()
 
     # check for key presses
-    key_pressed = ' '
+    key_pressed = 'q'
     while True:
         break_flag = False
         for event in pygame.event.get():
@@ -114,60 +115,12 @@ while i < n_imgs:
         classifications.loc[len(classifications)] = [str(status)] + list(spotlist.iloc[index])
     print(classifications)
     # save the CSV
-    if (len(classifications) % save_interval) == 0:
+    if (len(classifications) % save_interval) == 0 or key_pressed == 'q':
         classifications.to_csv(path_to_out_csv, mode='a', index=False, header=False)
         # reset classifications
         classifications = pd.DataFrame(columns = column_names)
 
-# while index < n_imgs:
-#     path_split = pathlist[index].split("/")
-#     # set window name
-#     pygame.display.set_caption(path_split[-1])
-#     # open the image
-#     target_path = pathlist[index]
+    if key_pressed == 'q':
+        break
 
-#     imp = pygame.image.load(target_path).convert()
-#     imp = pygame.transform.scale(imp, (sz,sz*3))
-#     # display the image
-#     scrn.blit(imp,(0,0))
-#     pygame.display.flip()
-    
-#     key_pressed = ' '
-
-#     while True:
-#         break_flag = False
-#         for event in pygame.event.get():
-#             # handle quitting
-#             if event.type == pygame.QUIT:
-#                 pygame.quit()
-#                 break_flag = True
-#             # process keypress
-#             if event.type == pygame.KEYUP:
-#                 key_pressed = pygame.key.name(event.key)
-#                 break_flag = True
-
-#         if break_flag:
-#             break
-#     print(key_pressed)
-#     if key_pressed == 'a':
-#         # case a - go back to the previous image
-#         index -= 1
-#         index = max(0, index)
-#     if key_pressed == 'f':
-#         # case f - go to next image
-#         index += 1
-#         index = min(len(pathlist), index)
-#     if key_pressed == 's':
-#         # case s: mark as negative and go to next
-#         classifications[index] = 'n'
-#         index += 1
-#     if key_pressed == 'd':
-#         # case d: mark as positive and go to next
-#         classifications[index] = 'p'
-#         index += 1
 pygame.quit()
-
-# for index in range(n_imgs):
-#     path_ftype_split = pathlist[index].rsplit('.', 1)[0]
-#     new_name = path_ftype_split + "_" + classifications[index] + "." + image_type
-#     os.rename(pathlist[index], new_name)
