@@ -14,6 +14,8 @@ image_type = "png"
 path_to_spot_list_csv = "./spot_list_ilastik_U3D.csv"
 path_to_out_csv = "./annotated_spot_list_ilastik_U3D.csv"
 
+fix_number = True # set True if the view numbers are offset by 100
+
 random_order = False
 random.seed(1)
 sz = 512
@@ -44,7 +46,11 @@ while i < n_imgs:
     j += 1
     index = indices[i]
     # get the image path
-    img_name = str(int(spotlist["FOV_row"][index])-100)  + "_" + str(int(spotlist["FOV_col"][index])-100) + "_" + str(spotlist["x"][index]) + "_" + str(spotlist["y"][index])
+    if fix_number:
+        img_name = str(int(spotlist["FOV_row"][index])-100)  + "_" + str(int(spotlist["FOV_col"][index])-100) + "_" + str(spotlist["x"][index]) + "_" + str(spotlist["y"][index])
+    else:
+        img_name = str(spotlist["FOV_row"][index])  + "_" + str(spotlist["FOV_col"][index]) + "_" + str(spotlist["x"][index]) + "_" + str(spotlist["y"][index])
+
     target_path = path_to_images + img_name + "." + image_type
     print(target_path)
     # set window name
