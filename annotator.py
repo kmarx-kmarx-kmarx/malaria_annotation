@@ -43,7 +43,6 @@ classifications.to_csv(path_to_out_csv, mode='w', index=False)
 i = 0
 j = 0
 while i < n_imgs:
-    j += 1
     index = indices[i]
     # get the image path
     if fix_number:
@@ -80,7 +79,7 @@ while i < n_imgs:
             break
     # handle key press
     print(key_pressed)
-    status = 0
+    status = -1
     if key_pressed == 'a':
         # case a - go back to the previous image
         i -= 1
@@ -103,12 +102,11 @@ while i < n_imgs:
         i += 1
 
     # append row to dataframe
+    if status != -1:
+        classifications.loc[len(classifications)] = [str(status)] + list(spotlist.iloc[index])
     print(classifications)
-    print("~~")
-    print(list(spotlist.iloc[[index]]))
-    classifications.loc[len(classifications)] = [str(status)] + list(spotlist.iloc[[index]])
     # save the CSV
-    if ((j + 1) % save_interval) == 0:
+    if (len(classifications) % save_interval) == 0:
         classifications.to_csv(path_to_out_csv, mode='a', index=False, header=False)
         # reset classifications
         classifications = pd.DataFrame(columns = column_names)
