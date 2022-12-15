@@ -82,7 +82,15 @@ while i < n_imgs:
     status = -1
     if key_pressed == 'a':
         # case a - go back to the previous image
+        # and delete the previous row
         i -= 1
+        try:
+            classifications.drop(classifications.index[[len(classifications)-1]], inplace=True)
+        except:
+            # If we can't drop, it's because there's nothing left to drop. We can't go back!
+            print("Already at end!")
+            i += 1
+            pass
         i = max(0, i)
     if key_pressed == 'g':
         # case g - go to next image
