@@ -98,16 +98,16 @@ while i < n_imgs:
     #     i += 1
     #     i = min(n_imgs, i)
     if key_pressed == 's':
-        # case s: mark as negative and go to next
-        status = 2
+        # case s: mark as positive and go to next
+        status = 1
         i += 1
     if key_pressed == 'd':
-        # case d: mark as positive and go to next
-        status = 1
+        # case d: mark as negative and go to next
+        status = 0
         i += 1
     if key_pressed == 'f':
         # case f: mark as unsure and go to next
-        status = 0
+        status = 9
         i += 1
 
     # append row to dataframe
